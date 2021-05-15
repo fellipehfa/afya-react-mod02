@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FormSignIn from "../../../components/Form"
+import FormSignIn from "../../../components/FormSignUp"
 import Nav from "../../../components/Nav"
 import Footer from "../../../components/Footer"
 

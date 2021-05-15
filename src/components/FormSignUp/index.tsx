@@ -1,9 +1,8 @@
 import React, { FormEvent, useCallback, useState } from 'react';
+import { useHistory } from 'react-router-dom'
 import { toast } from "react-toastify";
 import api from "../../service/api"
 import { CardContent } from './styles';
-
-
 
 interface IFormPostData {
     cpf: string;
@@ -18,6 +17,8 @@ const Form: React.FC = () => {
 
     const [isLoad, setIsLoad] = useState<boolean>(false)
 
+    const history = useHistory()
+
     const postSignUpData = useCallback(
         (e?: FormEvent<HTMLFormElement>) => {
             e?.preventDefault();
@@ -26,19 +27,20 @@ const Form: React.FC = () => {
             api.post("usuarios", formDataContent).then(
                 response => {
                     toast.success('Cadastro realizado com sucesso!')
-                    setIsLoad(!isLoad)
+                    setTimeout(() => {
+                        history.push('/login')
+                    }, 1500)
 
                 }
             ).catch(err => {
-                toast.error("Ooops, Falha no engano!")
+                toast.error("Ooops, falha no engano!")
             }).finally(() => setIsLoad(false))
-        }, [formDataContent, isLoad]
+        }, [formDataContent, isLoad, history]
     )
 
-     return (
+    return (
         <>
             <CardContent>
-
                 {isLoad ?
                     (
                         <p>Carregando...</p>
