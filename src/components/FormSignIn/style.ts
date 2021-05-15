@@ -33,5 +33,5 @@ export const FormSignInContent = styled.div`
             font-weight: bold;
             text-transform: uppercase;
         }
-    
+    }
 `

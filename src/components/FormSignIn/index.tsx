@@ -23,8 +23,12 @@ const FormSignIn: React.FC = () => {
             setIsLoad(true)
             api.post('login', formDataContent).then(
                 response => {
-                    toast.success("Login realizado!")
-                    history.push('/panel')
+                    localStorage.setItem('@tokenAfiaApp', response.data.token)
+
+                    toast.success("Login realizado!", {
+                        onClose: () => history.push('/panel')
+                    })
+                    
                 }
             ).catch(err => toast.error("Tem algo errado!")
             ).finally(() => setIsLoad(false))
