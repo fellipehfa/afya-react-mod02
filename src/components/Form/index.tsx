@@ -1,41 +1,59 @@
 import React, { FormEvent, useCallback, useState } from 'react';
 import { toast } from "react-toastify";
+import api from "../../service/api"
 import { CardContent } from './styles';
 
 
 
 interface IFormPostData {
-    name: string;
-    username: string;
-    email: string;
-    password: string;
+    cpf: string;
+    login: string;
+    nome: string;
+    senha: string;
 }
 
 const Form: React.FC = () => {
 
     const [formDataContent, setFormDataContent] = useState<IFormPostData>({} as IFormPostData)
 
+    const [isLoad, setIsLoad] = useState<boolean>(false)
+
     const postSignUpData = useCallback(
-        (e: FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            toast.success(formDataContent.name)
-            toast.success(formDataContent.username)
-            toast.success(formDataContent.email)
-            toast.success(formDataContent.password)
-        }, [formDataContent]
+        (e?: FormEvent<HTMLFormElement>) => {
+            e?.preventDefault();
+            setIsLoad(!isLoad)
+
+            api.post("usuarios", formDataContent).then(
+                response => {
+                    toast.success('Cadastro realizado com sucesso!')
+                    setIsLoad(!isLoad)
+
+                }
+            ).catch(err => {
+                toast.error("Ooops, Falha no engano!")
+            }).finally(() => setIsLoad(false))
+        }, [formDataContent, isLoad]
     )
 
-    return (
-        <CardContent>
- 
-            <form onSubmit={postSignUpData}>
-                <input type="text" placeholder="Seu nome" onChange={e => { setFormDataContent({ ...formDataContent, name: e.target.value }) }} />
-                <input type="text" placeholder="User name" onChange={e => { setFormDataContent({ ...formDataContent, username: e.target.value }) }} />
-                <input type="email" placeholder="email" onChange={e => { setFormDataContent({ ...formDataContent, email: e.target.value }) }} />
-                <input type="password" placeholder="Senha" onChange={e => { setFormDataContent({ ...formDataContent, password: e.target.value }) }} />
-                <button type="submit">Enviar</button>
-            </form>
-        </CardContent>
+     return (
+        <>
+            <CardContent>
+
+                {isLoad ?
+                    (
+                        <p>Carregando...</p>
+                    ) : (
+
+                        <form onSubmit={postSignUpData}>
+                            <input type="text" placeholder="Seu nome" onChange={e => { setFormDataContent({ ...formDataContent, nome: e.target.value }) }} />
+                            <input type="text" placeholder="LoginID" onChange={e => { setFormDataContent({ ...formDataContent, login: e.target.value }) }} />
+                            <input type="text" placeholder="Numero de CPF" onChange={e => { setFormDataContent({ ...formDataContent, cpf: e.target.value }) }} />
+                            <input type="password" placeholder="Senha" onChange={e => { setFormDataContent({ ...formDataContent, senha: e.target.value }) }} />
+                            <button type="submit">Enviar</button>
+                        </form>
+                    )}
+            </CardContent>
+        </>
     );
 }
 
