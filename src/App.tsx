@@ -1,11 +1,7 @@
-// import { Container } from './styles';
+import Routes from "./routes"
 
-const src: React.FC = () => {
-  return (
-    <div>
-      <h1>Hello Gama!</h1>
-    </div>
-  );
+const App: React.FC = () => {
+  return <Routes />;
 }
 
-export default src;
+export default App;

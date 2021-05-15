@@ -1,15 +1,17 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import App from "./App"
+import Home from "./views/pages/Home"
+import Contact from "./views/pages/Contact"
 
-const Router: React.FC = () => {
+const Routes: React.FC = () => {
   return (
       <BrowserRouter>
         <Switch>
-            <Route path="/teste" component={App} />
+            <Route path="/" exact component={Home} />
+            <Route path="/contact" component={Contact} />
         </Switch>
       </BrowserRouter>
   );
 }
 
-export default Router;
+export default Routes;
